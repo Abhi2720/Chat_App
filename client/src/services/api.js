@@ -21,8 +21,7 @@ export const authAPI = {
 export const chatAPI = {
     getMessages: (roomId, page = 1) => api.get(`/chat/messages/${roomId}?page=${page}`),
     getRooms: () => api.get('/chat/rooms'),
-    getPrivateRoom: (friendId) => api.get(`/chat/private-room/${friendId}`),
-    createRoom: (roomData) => api.post('/chat/rooms', roomData)
+    getPrivateRoom: (friendId) => api.get(`/chat/private-room/${friendId}`)
 };
 
 export const friendsAPI = {

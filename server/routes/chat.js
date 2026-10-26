@@ -53,36 +53,18 @@ router.get('/private-room/:friendId', authMiddleware, async (req, res) => {
         }).populate('participants', 'username avatar status');
 
         if (!room) {
+            const pairKey = [userId, friendId].sort().join('_');
             room = new Room({
                 name: 'Private Chat',
                 type: 'private',
-                participants: [req.user._id, friendId]
+                participants: [req.user._id, friendId],
+                pairKey: pairKey
             });
             await room.save();
             await room.populate('participants', 'username avatar status');
         }
 
         res.json(room);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-router.post('/rooms', authMiddleware, async (req, res) => {
-    try {
-        const { name, participants } = req.body;
-        
-        const room = new Room({
-            name,
-            type: 'group',
-            participants: [...participants, req.user._id],
-            createdBy: req.user._id
-        });
-
-        await room.save();
-        await room.populate('participants', 'username avatar');
-
-        res.status(201).json(room);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

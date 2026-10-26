@@ -11,7 +11,7 @@ const friendRequestSchema = new mongoose.Schema({
         ref: 'User',
         required: true 
     },
-    status: {
+    status: { // added for request history purpose will not be using currently
         type: String,
         enum: ['pending', 'accepted', 'rejected'],
         default: 'pending'

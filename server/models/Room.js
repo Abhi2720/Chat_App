@@ -14,6 +14,10 @@ const roomSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User' 
     }],
+    pairKey: {
+        type: String,
+        default: null
+    },
     createdBy: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User' 
@@ -24,5 +28,16 @@ const roomSchema = new mongoose.Schema({
         timestamp: Date
     }
 }, { timestamps: true });
+
+roomSchema.index(
+    { pairKey: 1 },
+    {
+        unique: true,
+        partialFilterExpression: {
+            type: 'private',
+            pairKey: { $type: 'string' }
+        }
+    }
+);
 
 module.exports = mongoose.model('Room', roomSchema);
